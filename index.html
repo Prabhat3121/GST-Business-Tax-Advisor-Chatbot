@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Tax Advisor Bot</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-calculator"></i>
+                <h1>Tax Advisor</h1>
+            </div>
+            <div class="business-profile">
+                <h3>Business Profile <button id="editProfileBtn" class="icon-btn"><i class="fas fa-edit"></i></button></h3>
+                <div id="profileContent" class="profile-content">
+                    <p><strong>Business Type:</strong> <span id="businessType">Not specified</span></p>
+                    <p><strong>Industry:</strong> <span id="industry">Not specified</span></p>
+                    <p><strong>Revenue Range:</strong> <span id="revenueRange">Not specified</span></p>
+                    <p><strong>GST Number:</strong> <span id="gstNumber">Not specified</span></p>
+                    <p><strong>Location:</strong> <span id="location">Not specified</span></p>
+                </div>
+            </div>
+            <div class="sidebar-actions">
+                <button id="uploadPdfBtn" class="sidebar-btn">
+                    <i class="fas fa-file-upload"></i> Upload Tax Documents
+                </button>
+                <button id="newChatBtn" class="sidebar-btn">
+                    <i class="fas fa-plus"></i> New Chat
+                </button>
+            </div>
+            <div class="tax-calendar">
+                <h3>Tax Calendar</h3>
+                <ul id="taxCalendar">
+                    <li><span class="date">April 20</span> GSTR-3B for March</li>
+                    <li><span class="date">April 25</span> GST Payment Deadline</li>
+                    <li><span class="date">May 11</span> GSTR-1 Filing</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="chat-header">
+                <h2>Business Tax Advisor</h2>
+                <div class="actions">
+                    <button id="clearChatBtn" class="action-btn">
+                        <i class="fas fa-trash"></i> Clear Chat
+                    </button>
+                </div>
+            </div>
+            
+            <div class="chat-container" id="chatContainer">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        <p>Hello! I'm your Business Tax Advisor, specializing in GST and other business tax regulations. How can I help you today?</p>
+                        <p>I can assist with:</p>
+                        <ul>
+                            <li>GST filing and compliance requirements</li>
+                            <li>Industry-specific tax regulations</li>
+                            <li>Tax optimization strategies</li>
+                            <li>Understanding new tax laws</li>
+                        </ul>
+                        <p>To provide personalized advice, I'll remember details about your business across our conversations.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <textarea id="userInput" placeholder="Type your tax-related question here..."></textarea>
+                <button id="sendBtn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- PDF Upload Modal -->
+    <div id="pdfModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Upload Tax Documents</h2>
+            <p>Upload your tax documents, returns, or GST filings for better personalized guidance.</p>
+            <form id="pdfUploadForm" enctype="multipart/form-data">
+                <div class="file-upload">
+                    <label for="pdfFile">Select PDF File</label>
+                    <input type="file" id="pdfFile" name="pdf" accept=".pdf" required>
+                    <p id="selectedFileName">No file selected</p>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="primary-btn">Upload</button>
+                    <button type="button" class="secondary-btn cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Business Profile Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Business Profile</h2>
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="profileBusinessType">Business Type</label>
+                    <select id="profileBusinessType" name="business_type">
+                        <option value="">Select Business Type</option>
+                        <option value="Sole Proprietorship">Sole Proprietorship</option>
+                        <option value="Partnership">Partnership</option>
+                        <option value="LLP">LLP</option>
+                        <option value="Private Limited">Private Limited</option>
+                        <option value="Public Limited">Public Limited</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="profileIndustry">Industry</label>
+                    <input type="text" id="profileIndustry" name="industry" placeholder="e.g., Retail, Manufacturing">
+                </div>
+                <div class="form-group">
+                    <label for="profileRevenueRange">Annual Revenue Range</label>
+                    <select id="profileRevenueRange" name="revenue_range">
+                        <option value="">Select Revenue Range</option>
+                        <option value="Under 20 lakhs">Under 20 lakhs</option>
+                        <option value="20-50 lakhs">20-50 lakhs</option>
+                        <option value="50 lakhs - 1 crore">50 lakhs - 1 crore</option>
+                        <option value="1-5 crore">1-5 crore</option>
+                        <option value="Above 5 crore">Above 5 crore</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="profileGstNumber">GST Registration Number</label>
+                    <input type="text" id="profileGstNumber" name="gst_number" placeholder="e.g., 29AABCR1234A1Z5">
+                </div>
+                <div class="form-group">
+                    <label for="profileLocation">Business Location</label>
+                    <input type="text" id="profileLocation" name="location" placeholder="e.g., Mumbai, Maharashtra">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="primary-btn">Save Profile</button>
+                    <button type="button" class="secondary-btn cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="/static/script.js"></script>
+</body>
+</html>
